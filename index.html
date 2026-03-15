@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finders Hub — Discover the Best Products Before Everyone Else</title>
+  <meta name="description" content="Discover the best budget tech gadgets on Amazon India. Curated by Finders Hub." />
+  <meta property="og:title" content="Finders Hub" />
+  <meta property="og:description" content="Discover the Best Products Before Everyone Else" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #1E3A8A; --blue-dark: #152B6B; --orange: #F97316;
+      --bg: #0A1628; --surface: #111D35; --surface-alt: #172141;
+      --border: rgba(147,197,253,0.12); --text: #F1F5F9;
+      --muted: #64748B; --muted-l: #94A3B8; --light-blue: #93C5FD;
+    }
+    body { background: var(--bg); font-family: 'Montserrat', sans-serif; color: var(--text); min-height: 100vh; }
+    input, textarea, button, select { font-family: 'Montserrat', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Shared */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
+    .badge { background: rgba(249,115,22,0.15); color: var(--orange); font-size: 10px; font-weight: 600; padding: 2px 9px; border-radius: 99px; border: 1px solid rgba(249,115,22,0.3); letter-spacing: 0.3px; display: inline-block; }
+    .badge-blue { background: rgba(147,197,253,0.12); color: var(--light-blue); border-color: rgba(147,197,253,0.25); }
+    .badge-purple { background: rgba(167,139,250,0.12); color: #A78BFA; border-color: rgba(167,139,250,0.25); }
+    .btn { border: none; border-radius: 10px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 13px; transition: all 0.2s; padding: 10px 20px; }
+    .btn-primary { background: var(--orange); color: #fff; }
+    .btn-primary:hover { background: #ea6c10; transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface-alt); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #1e2d4d; }
+    .btn-ghost { background: transparent; color: var(--muted-l); border: 1px solid var(--border); font-size: 12px; padding: 8px 14px; }
+    .btn-ghost:hover { background: var(--surface); }
+    .btn-danger { background: rgba(127,29,29,0.2); color: #FCA5A5; border: 1px solid rgba(252,165,165,0.2); font-size: 12px; padding: 8px 14px; }
+    .btn-danger:hover { background: rgba(127,29,29,0.35); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .inp-label { font-size: 11px; font-weight: 600; color: var(--muted-l); letter-spacing: 0.5px; display: block; margin-bottom: 5px; }
+    .inp { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 13px; font-family: 'Montserrat', sans-serif; outline: none; resize: vertical; transition: border-color 0.2s; }
+    .inp:focus { border-color: var(--orange); }
+
+    /* Views */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* Home */
+    #hero {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 20px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(249,115,22,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    #hero > * { position: relative; }
+    .logo { display: flex; align-items: center; gap: 8px; justify-content: center; }
+    .logo-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; font-family: 'Poppins', sans-serif; }
+    .logo-text { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 20px; }
+    .logo-text span { color: var(--orange); }
+    .tagline { color: var(--light-blue); font-size: 13px; margin-top: 8px; font-weight: 500; }
+    .hero-badges { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+    .collections-wrap { max-width: 520px; margin: 0 auto; padding: 24px 16px; }
+    .section-label { color: var(--muted-l); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+    .collection-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .collection-card:hover { border-color: rgba(249,115,22,0.4); transform: translateY(-2px); }
+    .col-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .col-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; }
+    .col-sub { font-size: 12px; color: var(--muted-l); margin-top: 2px; }
+    .col-count { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .col-arrow { color: var(--orange); font-size: 18px; flex-shrink: 0; }
+    .manage-btn { display: block; text-align: center; margin-top: 28px; background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; }
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
+
+    /* Collection Detail */
+    .detail-header { padding: 28px 20px 24px; border-bottom: 1px solid var(--border); }
+    .back-btn { background: none; border: none; color: var(--light-blue); cursor: pointer; font-size: 13px; margin-bottom: 12px; padding: 0; display: flex; align-items: center; gap: 5px; }
+    .detail-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 22px; }
+    .detail-sub { font-size: 13px; color: var(--light-blue); margin-top: 3px; }
+    .link-card { display: flex; align-items: center; gap: 13px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--orange); border-radius: 12px; padding: 14px 16px; transition: all 0.2s; margin-bottom: 10px; }
+    .link-card:hover { background: var(--surface-alt); transform: translateX(4px); }
+    .link-num { width: 32px; height: 32px; border-radius: 8px; background: var(--orange); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; color: #fff; flex-shrink: 0; }
+    .link-name { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14px; }
+    .link-desc { font-size: 11px; color: var(--muted-l); margin-top: 2px; }
+    .link-price { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 14px; color: var(--orange); }
+    .link-tap { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .footer-credit { text-align: center; margin-top: 28px; color: var(--muted); font-size: 11px; padding-bottom: 24px; }
+    .footer-credit span { color: var(--orange); font-weight: 600; }
+
+    /* Admin */
+    .admin-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .admin-wrap { max-width: 620px; margin: 0 auto; padding: 24px 16px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
+    .stat-num { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 26px; color: var(--orange); }
+    .stat-label { font-size: 11px; color: var(--muted-l); margin-top: 3px; }
+    .new-page-form { background: var(--surface); border: 1px solid rgba(249,115,22,0.3); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+    .form-grid-2 { display: grid; grid-template-columns: 60px 1fr; gap: 10px; margin-bottom: 10px; }
+    .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 5px; }
+    .swatch { width: 28px; height: 28px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
+    .swatch.active { border-color: var(--orange); }
+    .form-actions { display: flex; gap: 8px; margin-top: 14px; }
+    .page-row { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; }
+    .page-row-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .page-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .page-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .hidden-row { opacity: 0.5; }
+    .live-dot { color: #6EE7B7; }
+    .edit-form { display: flex; flex-direction: column; gap: 8px; }
+    .edit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .link-row { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--orange); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+    .link-row-inner { display: flex; align-items: center; gap: 10px; }
+    .link-row-mini { width: 30px; height: 30px; border-radius: 7px; background: var(--orange); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 10px; color: #fff; flex-shrink: 0; }
+
+    /* Login */
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; text-align: center; }
+    .login-sub { color: var(--muted-l); font-size: 13px; margin: 12px 0 28px; }
+    .error-msg { color: #FCA5A5; font-size: 12px; margin-top: 8px; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .page-actions { gap: 4px; }
+      .page-actions .btn { font-size: 10px; padding: 6px 8px; }
+      .stats-grid { grid-template-columns: repeat(3,1fr); gap: 6px; }
+      .stat-num { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HOME VIEW ──────────────────────────── -->
+<div id="view-home" class="view active">
+  <div id="hero">
+    <div class="logo"><div class="logo-icon">F</div><div class="logo-text">Finders<span>Hub</span></div></div>
+    <p class="tagline">Discover the Best Products Before Everyone Else</p>
+    <div class="hero-badges">
+      <span class="badge">Budget Tech Gadgets</span>
+      <span class="badge badge-blue">Amazon India</span>
+      <span class="badge badge-purple">Affiliate Links</span>
+    </div>
+  </div>
+  <div class="collections-wrap">
+    <p class="section-label" id="home-count">Browse Collections</p>
+    <div id="collections-list"></div>
+    <button class="manage-btn" onclick="showView('login')">⚙ Manage</button>
+  </div>
+</div>
+
+<!-- ── COLLECTION DETAIL VIEW ─────────────── -->
+<div id="view-collection" class="view">
+  <div class="detail-header" id="detail-header"></div>
+  <div class="collections-wrap" style="padding-top:20px;">
+    <div id="links-list"></div>
+    <div class="footer-credit">Curated by <span>Finders Hub</span> · Amazon affiliate links</div>
+  </div>
+</div>
+
+<!-- ── ADMIN LOGIN VIEW ───────────────────── -->
+<div id="view-login" class="view">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="logo" style="justify-content:center;margin-bottom:4px;"><div class="logo-icon">F</div><div class="logo-text">Finders<span>Hub</span></div></div>
+      <p class="login-sub">Admin Access</p>
+      <label class="inp-label">Password</label>
+      <input type="password" class="inp" id="pass-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+      <p class="error-msg" id="login-error" style="display:none;">Incorrect password</p>
+      <button class="btn btn-primary" onclick="doLogin()" style="width:100%;margin-top:16px;">Enter Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN DASHBOARD VIEW ──────────────── -->
+<div id="view-admin" class="view">
+  <div class="admin-bar">
+    <div class="logo"><div class="logo-icon" style="width:28px;height:28px;font-size:13px;">F</div><div class="logo-text" style="font-size:16px;">Finders<span>Hub</span></div></div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span class="badge">Admin</span>
+      <button class="btn btn-ghost" onclick="showView('home')">View Site</button>
+      <button class="btn btn-ghost" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+  <div class="admin-wrap">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Pages</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-live">0</div><div class="stat-label">Live</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-links">0</div><div class="stat-label">Total Links</div></div>
+    </div>
+    <div id="new-page-trigger" style="margin-bottom:20px;">
+      <button class="btn btn-primary" onclick="openNewForm()" style="width:100%;">+ Create New Collection Page</button>
+    </div>
+    <div id="new-page-form" class="new-page-form" style="display:none;">
+      <p style="font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;margin-bottom:16px;">New Collection Page</p>
+      <div class="form-grid-2">
+        <div><label class="inp-label">Emoji</label><input class="inp" id="np-emoji" placeholder="🔗" value="🔗" /></div>
+        <div><label class="inp-label">Title *</label><input class="inp" id="np-title" placeholder="e.g. 7 Smart Home Gadgets" /></div>
+      </div>
+      <div style="margin-bottom:10px;"><label class="inp-label">Sub-title</label><input class="inp" id="np-sub" placeholder="e.g. That Make Life Easier" /></div>
+      <div style="margin-bottom:16px;">
+        <label class="inp-label">Header Color</label>
+        <div class="color-swatches" id="color-swatches"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="createPage()">Create Page</button>
+        <button class="btn btn-ghost" onclick="closeNewForm()">Cancel</button>
+      </div>
+    </div>
+    <p class="section-label">All Collection Pages</p>
+    <div id="admin-pages-list"></div>
+  </div>
+</div>
+
+<!-- ── EDIT COLLECTION VIEW ───────────────── -->
+<div id="view-edit" class="view">
+  <div class="admin-bar">
+    <button class="btn btn-ghost" onclick="showView('admin')">← Dashboard</button>
+    <div id="edit-title" style="font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;"></div>
+  </div>
+  <div class="admin-wrap">
+    <div id="add-link-trigger" style="margin-bottom:20px;">
+      <button class="btn btn-primary" onclick="openAddLink()" style="width:100%;">+ Add Product Link</button>
+    </div>
+    <div id="add-link-form" class="new-page-form" style="display:none;">
+      <p style="font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;margin-bottom:14px;">Add Product Link</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div><label class="inp-label">Product Name *</label><input class="inp" id="nl-name" placeholder="e.g. Wipro RGB LED Strip Lights" /></div>
+        <div class="edit-grid-2">
+          <div><label class="inp-label">Price</label><input class="inp" id="nl-price" placeholder="₹1,346" /></div>
+          <div><label class="inp-label">Affiliate URL *</label><input class="inp" id="nl-url" placeholder="https://amzn.to/..." /></div>
+        </div>
+        <div><label class="inp-label">Short Description</label><input class="inp" id="nl-desc" placeholder="One-line product benefit" /></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="addLink()">Add Link</button>
+        <button class="btn btn-ghost" onclick="closeAddLink()">Cancel</button>
+      </div>
+    </div>
+    <p class="section-label" id="edit-links-count">0 Product Links</p>
+    <div id="edit-links-list"></div>
+  </div>
+</div>
+
+<script>
+// ── State ─────────────────────────────────
+const PASS = 'findershub2026';
+const SK = 'fh_v3';
+const COLORS = ['#1E3A8A','#065F46','#7C2D12','#4C1D95','#164E63','#881337','#92400E','#1E3A8A'];
+let pages = [], authed = false, editPageId = null, selectedColor = '#1E3A8A', editingLinkId = null;
+
+const uid = () => Math.random().toString(36).slice(2,9);
+
+// ── Storage ───────────────────────────────
+function save() { try { localStorage.setItem(SK, JSON.stringify(pages)); } catch(e){} }
+function load() {
+  try {
+    const d = localStorage.getItem(SK);
+    if (d) { pages = JSON.parse(d); return; }
+  } catch(e){}
+  pages = [
+    { id:'smart-home-gadgets', emoji:'🏠', title:'7 Smart Home Gadgets', subtitle:'That Make Life Easier', color:'#1E3A8A', visible:true, links:[
+      {id:'l1',num:'01',name:'Wipro RGB LED Strip Lights',price:'₹1,346',desc:'Colour-changing LED strips for any room',url:'#'},
+      {id:'l2',num:'02',name:'Ambrane Wireless Charging Pad',price:'₹1,699',desc:'Fast wireless charging for Qi phones',url:'#'},
+      {id:'l3',num:'03',name:'Motion Sensor Night Light',price:'~₹499',desc:'Auto on/off for hallways & bathrooms',url:'#'},
+      {id:'l4',num:'04',name:'Smart Wi-Fi Plug',price:'~₹799',desc:'Control any appliance from your phone',url:'#'},
+      {id:'l5',num:'05',name:'Portronics USB Desk Fan',price:'₹799',desc:'Quiet portable fan for desk or travel',url:'#'},
+      {id:'l6',num:'06',name:'Spigen Magnetic Phone Holder',price:'₹1,499',desc:'360° magnetic mount for car dashboard',url:'#'},
+      {id:'l7',num:'07',name:'Portronics Power Bank 10000mAh',price:'₹799',desc:'Dual USB fast charging, pocket-sized',url:'#'},
+    ]},
+    { id:'desk-setup-gadgets', emoji:'💻', title:'6 Desk Setup Gadgets', subtitle:'That Boost Productivity', color:'#065F46', visible:true, links:[
+      {id:'d1',num:'01',name:'Portronics Foldable Laptop Stand',price:'₹249',desc:'Lightweight, adjustable height stand',url:'#'},
+      {id:'d2',num:'02',name:'Ambrane USB Desk Fan 360°',price:'₹799',desc:'Rotatable mini fan, USB powered',url:'#'},
+      {id:'d3',num:'03',name:'Ambrane Wireless Charging Pad',price:'₹1,699',desc:'Keep phone topped up while you work',url:'#'},
+      {id:'d4',num:'04',name:'Cable Organiser Clips',price:'~₹299',desc:'Keep your desk clutter-free instantly',url:'#'},
+      {id:'d5',num:'05',name:'Amazon Basics Ring Light',price:'₹419',desc:'Perfect lighting for video calls',url:'#'},
+      {id:'d6',num:'06',name:'Amazon Basics Foldable Phone Stand',price:'₹86',desc:'Compact stand for hands-free viewing',url:'#'},
+    ]},
+  ];
+  save();
+}
+
+// ── Views ─────────────────────────────────
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── Home ──────────────────────────────────
+function renderHome() {
+  const vis = pages.filter(p => p.visible);
+  document.getElementById('home-count').textContent = `Browse Collections · ${vis.length} available`;
+  const el = document.getElementById('collections-list');
+  if (vis.length === 0) { el.innerHTML = '<div class="empty-state">No collections yet. Check back soon!</div>'; return; }
+  el.innerHTML = vis.map((p,i) => `
+    <div class="collection-card" onclick="openCollection('${p.id}')" style="animation:fadeUp 0.4s ease ${i*0.06}s both;">
+      <div class="col-icon" style="background:${p.color}33;border:1px solid ${p.color}44;">${p.emoji}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="col-title">${p.title}</div>
+        <div class="col-sub">${p.subtitle}</div>
+        <div class="col-count">${p.links.length} products inside</div>
+      </div>
+      <div class="col-arrow">→</div>
+    </div>
+  `).join('');
+}
+
+function openCollection(id) {
+  const page = pages.find(p => p.id === id);
+  if (!page) return;
+  document.getElementById('detail-header').innerHTML = `
+    <button class="back-btn" onclick="showView('home');renderHome();">← Back</button>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="font-size:36px;">${page.emoji}</div>
+      <div>
+        <div class="detail-title">${page.title}</div>
+        <div class="detail-sub">${page.subtitle}</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;">
+      <span class="badge">Amazon India</span>&nbsp;
+      <span class="badge badge-blue">${page.links.length} Products</span>
+    </div>
+  `;
+  document.getElementById('detail-header').style.background = `linear-gradient(135deg,${page.color}cc,var(--bg))`;
+  document.getElementById('links-list').innerHTML = page.links.map((l,i) => `
+    <a href="${l.url||'#'}" target="_blank" rel="noopener noreferrer" class="link-card" style="animation:fadeUp 0.4s ease ${i*0.05}s both;">
+      <div class="link-num">${l.num}</div>
+      <div style="flex:1;">
+        <div class="link-name">${l.name}</div>
+        ${l.desc ? `<div class="link-desc">${l.desc}</div>` : ''}
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div class="link-price">${l.price}</div>
+        <div class="link-tap">View →</div>
+      </div>
+    </a>
+  `).join('');
+  showView('collection');
+}
+
+// ── Auth ──────────────────────────────────
+function doLogin() {
+  const v = document.getElementById('pass-input').value;
+  if (v === PASS) { authed = true; document.getElementById('pass-input').value=''; renderAdmin(); showView('admin'); }
+  else { const e = document.getElementById('login-error'); e.style.display='block'; setTimeout(()=>e.style.display='none',2000); }
+}
+function doLogout() { authed = false; showView('home'); renderHome(); }
+
+// ── Admin ─────────────────────────────────
+function renderAdmin() {
+  document.getElementById('stat-total').textContent = pages.length;
+  document.getElementById('stat-live').textContent = pages.filter(p=>p.visible).length;
+  document.getElementById('stat-links').textContent = pages.reduce((a,p)=>a+p.links.length,0);
+
+  // Color swatches
+  const sw = document.getElementById('color-swatches');
+  sw.innerHTML = COLORS.map(c => `<div class="swatch${selectedColor===c?' active':''}" style="background:${c};" onclick="selectColor('${c}')"></div>`).join('');
+
+  const el = document.getElementById('admin-pages-list');
+  if (pages.length === 0) { el.innerHTML = '<div class="empty-state">No pages yet. Create your first one above!</div>'; return; }
+  el.innerHTML = pages.map(p => `
+    <div class="page-row${p.visible?'':' hidden-row'}" id="row-${p.id}">
+      <div class="page-row-inner">
+        <div class="page-icon" style="background:${p.color}44;">${p.emoji}</div>
+        <div style="flex:1;min-width:120px;">
+          <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;">${p.title}</div>
+          <div style="font-size:11px;color:var(--muted-l);">${p.subtitle}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">${p.links.length} links · ${p.visible?'<span class="live-dot">Live</span>':'<span style="color:var(--muted)">Hidden</span>'}</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary" onclick="openEdit('${p.id}')" style="font-size:11px;padding:7px 12px;">Edit Links</button>
+          <button class="btn btn-ghost" onclick="togglePage('${p.id}')" style="font-size:11px;padding:7px 12px;">${p.visible?'Hide':'Show'}</button>
+          <button class="btn btn-ghost" onclick="openCollection('${p.id}')" style="font-size:11px;padding:7px 12px;color:var(--orange);">Preview</button>
+          <button class="btn btn-danger" onclick="deletePage('${p.id}')" style="font-size:11px;padding:7px 12px;">Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectColor(c) { selectedColor = c; document.querySelectorAll('.swatch').forEach(s=>{ s.classList.toggle('active', s.style.background===c||s.style.backgroundColor===c); }); }
+function openNewForm() { document.getElementById('new-page-trigger').style.display='none'; document.getElementById('new-page-form').style.display='block'; }
+function closeNewForm() { document.getElementById('new-page-trigger').style.display='block'; document.getElementById('new-page-form').style.display='none'; }
+
+function createPage() {
+  const title = document.getElementById('np-title').value.trim();
+  if (!title) return alert('Please enter a title');
+  const page = {
+    id: title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'')+'-'+uid(),
+    emoji: document.getElementById('np-emoji').value||'🔗',
+    title, subtitle: document.getElementById('np-sub').value,
+    color: selectedColor, visible: true, links: []
+  };
+  pages.push(page); save(); closeNewForm();
+  document.getElementById('np-title').value=''; document.getElementById('np-sub').value=''; document.getElementById('np-emoji').value='🔗';
+  renderAdmin();
+}
+
+function togglePage(id) {
+  const p = pages.find(x=>x.id===id); if(!p) return;
+  p.visible = !p.visible; save(); renderAdmin();
+}
+
+function deletePage(id) {
+  if (!confirm('Delete this collection? This cannot be undone.')) return;
+  pages = pages.filter(p=>p.id!==id); save(); renderAdmin();
+}
+
+// ── Edit Links ────────────────────────────
+function openEdit(id) {
+  editPageId = id;
+  const page = pages.find(p=>p.id===id); if(!page) return;
+  document.getElementById('edit-title').textContent = page.emoji+' '+page.title;
+  renderEditLinks();
+  showView('edit');
+}
+
+function renderEditLinks() {
+  const page = pages.find(p=>p.id===editPageId); if(!page) return;
+  document.getElementById('edit-links-count').textContent = `${page.links.length} Product Links`;
+  const el = document.getElementById('edit-links-list');
+  if (page.links.length===0) { el.innerHTML='<div class="empty-state">No links yet. Add your first product above!</div>'; return; }
+  el.innerHTML = page.links.map(l => `
+    <div class="link-row" id="lr-${l.id}">
+      <div class="link-row-inner">
+        <div class="link-row-mini">${l.num}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;">${l.name}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;">${l.desc||''}</div>
+        </div>
+        <div style="font-weight:700;color:var(--orange);font-size:13px;margin-right:8px;flex-shrink:0;">${l.price}</div>
+        <div style="display:flex;gap:5px;">
+          <button class="btn btn-ghost" onclick="startEditLink('${l.id}')" style="padding:5px 10px;font-size:11px;">Edit</button>
+          <button class="btn btn-danger" onclick="deleteLink('${l.id}')" style="padding:5px 10px;font-size:11px;">✕</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function startEditLink(id) {
+  const page = pages.find(p=>p.id===editPageId);
+  const link = page?.links.find(l=>l.id===id); if(!link) return;
+  document.getElementById('lr-'+id).innerHTML = `
+    <div class="edit-form">
+      <div><label class="inp-label">Name</label><input class="inp" id="el-name-${id}" value="${link.name}" /></div>
+      <div class="edit-grid-2">
+        <div><label class="inp-label">Price</label><input class="inp" id="el-price-${id}" value="${link.price}" /></div>
+        <div><label class="inp-label">URL</label><input class="inp" id="el-url-${id}" value="${link.url||''}" /></div>
+      </div>
+      <div><label class="inp-label">Description</label><input class="inp" id="el-desc-${id}" value="${link.desc||''}" /></div>
+      <div><button class="btn btn-ghost" onclick="saveEditLink('${id}')">Done</button></div>
+    </div>
+  `;
+}
+
+function saveEditLink(id) {
+  const page = pages.find(p=>p.id===editPageId);
+  const link = page?.links.find(l=>l.id===id); if(!link) return;
+  link.name = document.getElementById('el-name-'+id).value;
+  link.price = document.getElementById('el-price-'+id).value;
+  link.url = document.getElementById('el-url-'+id).value;
+  link.desc = document.getElementById('el-desc-'+id).value;
+  save(); renderEditLinks();
+}
+
+function deleteLink(id) {
+  const page = pages.find(p=>p.id===editPageId); if(!page) return;
+  page.links = page.links.filter(l=>l.id!==id).map((l,i)=>({...l,num:String(i+1).padStart(2,'0')}));
+  save(); renderEditLinks();
+}
+
+function openAddLink() { document.getElementById('add-link-trigger').style.display='none'; document.getElementById('add-link-form').style.display='block'; }
+function closeAddLink() { document.getElementById('add-link-trigger').style.display='block'; document.getElementById('add-link-form').style.display='none'; }
+
+function addLink() {
+  const name = document.getElementById('nl-name').value.trim(); if(!name) return alert('Product name required');
+  const page = pages.find(p=>p.id===editPageId); if(!page) return;
+  const num = String(page.links.length+1).padStart(2,'0');
+  page.links.push({id:uid(),num,name,price:document.getElementById('nl-price').value,url:document.getElementById('nl-url').value,desc:document.getElementById('nl-desc').value});
+  save(); closeAddLink();
+  document.getElementById('nl-name').value=''; document.getElementById('nl-price').value='';
+  document.getElementById('nl-url').value=''; document.getElementById('nl-desc').value='';
+  renderEditLinks();
+}
+
+// ── Init ──────────────────────────────────
+load(); renderHome();
+</script>
+</body>
+</html>
